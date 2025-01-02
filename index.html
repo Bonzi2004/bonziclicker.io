@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>BonziClicker</title> 
+<link rel="stylesheet" href="styles.css"> 
+<style> /* Ваши стили здесь */ 
+body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh; margin: 0; } .container { background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 20px; text-align: center; width: 90%; max-width: 600px; } .hamster-img { cursor: pointer; width: 150px; transition: transform 0.2s; /* Плавный переход для анимации */ } .hamster-img:active { transform: scale(0.9);
+ /* Уменьшение при клике */ } .score-board { font-size: 2em; margin: 20px 0; } .reward { margin: 10px 0; } .reward-button { padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; } .reward-button:hover { background-color: #45a049; } .notification { font-size: 1.5em; color: black; opacity: 0; transition: opacity 1s ease; } </style> </head> <body> <div class="container"> <div class="header"> <h2>BonziClicker</h2> </div> <div class="score-board"> <span id="score">0</span> </div> <img src="https://avatars.mds.yandex.net/i?id=c8be8819a6a32032566f1d911f3c2d17_l-12536664-images-thumbs&n=13" id="hamster" alt="Hamster" class="hamster-img"> <div class="notification" id="notification">+1</div>
+    <div class="rewards">
+        <div class="reward">
+            <div class="reward-title">Ежедневная награда</div>
+            <button id="daily-reward" class="reward-button">Забрать награду</button>
+        </div>
+        <div class="reward">
+            <div class="reward-title">Шифр</div>
+            <input type="text" id="combo-code" placeholder="Введите шифр" />
+            <button id="apply-combo" class="reward-button">Применить шифр</button>
+        </div>
+        <div class="reward">
+            <div class="reward-title">Boost</div>
+            <button id="boost-button" class="reward-button">Получить Boost</button>
+        </div>
+        <div class="reward">
+            <div class="reward-title">Взлом</div>
+            <button id="hack-button" class="reward-button">Взломать</button>
+        </div>
+        <div class="reward">
+            <div class="reward-title">Поделиться с друзьями</div>
+            <button id="share-button" class="reward-button">Поделиться</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let score = 0; // Начальный счет
+    const scoreDisplay = document.getElementById('score');
+    const notification = document.getElementById('notification');
+    let dailyRewardAvailable = true;
+    let currentCode = null;
+    let boostActive = false;
+    let boostInterval;
+    const boostLimit = 2500; // Минимум очков для активации буста
+    const boostDuration = 10000; // 10 секунд
+    const dailyRewardCooldown = 180000; // 3 минуты в миллисекундах
+    const codes = [
+        { code: "BONZI", hint: "B...I" },
+        { code: "CLICK", hint: "C...K" },
+        { code: "CHRISTMAS", hint: "C...S" },
+        { code: "GAME", hint: "G...E" },
+    ];
+
+    // Массив изображений для взлома
+    const hackImages = [
+        'https://avatars.mds.yandex.net/i?id=c8be8819a6a32032566f1d911f3c2d17_l-12536664-images-thumbs&n=13',
+        'https://static.wikia.nocookie.net/the-microsoft-agent/images/6/6a/ClippyV2.png/revision/latest?cb=20190128065558',
+        'https://static.wikia.nocookie.net/the-microsoft-agent/images/4/41/Peedy_Parrot.gif/revision/latest?cb=20190127180403',
+        'https://static.wikia.nocookie.net/the-microsoft-agent/images/e/ed/Image_%281%29.gif/revision/latest?cb=20190127183042',
+        'https://media.tenor.com/Xw-IhAxUofUAAAAj/bonzi-buddy-uwu.gif'
+    ];
+
+    // Загрузка сохраненного счета
+    function loadScore() {
+        const savedScore = localStorage.getItem('bonziClickerScore');
+        if (savedScore) {
+            score = parseInt(savedScore, 10);
+            scoreDisplay.textContent = score;
+        }
+    }
+
+    // Сохранение счета
+    function saveScore() {
+        localStorage.setItem('bonziClickerScore', score);
+    }
+
+    // Обработчик клика по хомяку
+    document.getElementById('hamster').addEventListener('click', () => {
+        score++;
+        scoreDisplay.textContent = score;
+        notification.textContent = "+1";
+        notification.style.opacity = '1';
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, 1000);
+        saveScore(); // Сохраняем счет после клика
+    });
+
+    // Обработчик для ежедневной награды
+    document.getElementById('daily-reward').addEventListener('click', () => {
+        if (dailyRewardAvailable) {
+            score += 20;
+            scoreDisplay.textContent = score;
+            alert('Вы получили ежедневную награду: +20 очков!');
+            saveScore(); // Сохраняем счет после получения награды
+            dailyRewardAvailable = false;
+
+            // Таймер для следующей награды
+            setTimeout(() => {
+                dailyRewardAvailable = true;
+                alert('Ежедневная награда снова доступна!');
+            }, dailyRewardCooldown);
+        } else {
+            alert('Вы уже получили свою ежедневную награду. Подождите 3 минуты.');
+        }
+    });
+
+    // Обработчик для применения шифра
+    document.getElementById('apply-combo').addEventListener('click', () => {
+        const comboInput = document.getElementById('combo-code');
+        const code = comboInput.value.trim();
+        if (currentCode && code === currentCode.code) {
+            score += 990;
+            scoreDisplay.textContent = score;
+            alert('ответ правильный! +990 очков');
+            saveScore(); // Сохраняем счет после применения шифра
+            currentCode = null; // Сбрасываем текущий код
+            comboInput.value = ''; // Очищаем поле ввода
+        } else {
+            alert('Неверная расшифровка. Попробуйте снова.');
+        }
+    });
+// Обработчик для активации буста
+document.getElementById('boost-button').addEventListener('click', () => {
+if (!boostActive && score >= boostLimit) {
+boostActive = true;
+alert('Boost активирован!');
+
+    boostInterval = setInterval(() => {
+        score += 1; // Увеличиваем счет на 1
+        scoreDisplay.textContent = score;
+        saveScore(); // Сохраняем счет во время буста
+    }, 10); // Увеличение счета каждые 10 миллисекунд
+
+    setTimeout(() => {
+        clearInterval(boostInterval);
+        boostActive = false;
+        alert('Boost завершен!');
+    }, boostDuration); // Boost длится 10 секунд
+} else if (score < boostLimit) {
+    alert('Не хватает очков для активации Boost! Достигните 2500 очков.');
+} else {
+    alert('Boost уже активирован! Подождите, пока он не завершится.');
+}
+});
+
+// Загрузка сохраненного счета и изображения
+function loadGameState() {
+const savedScore = localStorage.getItem('bonziClickerScore');
+const savedImage = localStorage.getItem('hamsterImage'); // Загружаем сохраненное изображение
+if (savedScore) {
+score = parseInt(savedScore, 10);
+scoreDisplay.textContent = score;
+}
+if (savedImage) {
+document.getElementById('hamster').src = savedImage; // Устанавливаем сохраненное изображение
+}
+}
+
+// Сохранение счета и изображения
+function saveGameState() {
+localStorage.setItem('bonziClickerScore', score);
+localStorage.setItem('hamsterImage', document.getElementById('hamster').src); // Сохраняем текущее изображение
+}
+
+// Обработчик клика по хомяку
+document.getElementById('hamster').addEventListener('click', () => {
+score++;
+scoreDisplay.textContent = score;
+notification.textContent = "+1";
+notification.style.opacity = '1';
+setTimeout(() => {
+notification.style.opacity = '0';
+}, 1000);
+saveGameState(); // Сохраняем счет и изображение после клика
+});
+
+// Обработчик для взлома
+document.getElementById('hack-button').addEventListener('click', () => {
+const chance = Math.random();
+if (chance <= 0.2) { // 20% шанс
+const hamsterImage = document.getElementById('hamster');
+const randomIndex = Math.floor(Math.random() * hackImages.length); // Случайный индекс
+hamsterImage.src = hackImages[randomIndex]; // Заменяем изображение
+saveGameState(); // Сохраняем новое изображение
+alert('Взлом удался!');
+} else {
+alert('Взлом не удался! Попробуйте снова.');
+}
+});
+
+    // Обработчик для дележа
+    document.getElementById('share-button').addEventListener('click', () => {
+        const shareText = `Я достиг ${score} очков в BonziClicker!`;
+        const shareUrl = window.location.href;
+
+        if (navigator.share) {
+            navigator.share({
+                title: 'BonziClicker',
+                text: shareText,
+                url: shareUrl
+            }).then(() => {
+                console.log('Успешно поделились!');
+            }).catch((error) => {
+                console.error('Ошибка при попытке поделиться:', error);
+            });
+        } else {
+            alert(`Скопируйте ссылку и поделитесь: ${shareUrl}`);
+        }
+    });
+
+    // Выбор случайного кода при загрузке
+    function selectRandomCode() {
+        if (codes.length > 0) {
+            currentCode = codes[Math.floor(Math.random() * codes.length)];
+            alert(`Подсказка для шифра: ${currentCode.hint}`);
+        }
+    }
+
+    // Вызываем функцию при загрузке страницы
+    window.onload = () => {
+        loadScore(); // Загружаем сохраненный счет
+        selectRandomCode(); // Выбираем случайный код
+    };
+</script>
+Найти еще
+</body> </html>
