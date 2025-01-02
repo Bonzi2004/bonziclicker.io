@@ -1,0 +1,397 @@
+﻿html {
+    font-size: 14px;
+}
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #6a0dad; /* Фиолетовый фон */
+    color: #333;
+    overflow-x: hidden;
+    font-family: 'Arial', sans-serif;
+}
+/* Ваш старый CSS остается без изменений*/
+.container{
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #fff; /* Белый фон контейнера */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+}
+
+.avatar{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.user-info{
+    margin-left: 10px;
+}
+
+h2{
+    margin: 0;
+    font-size: 1em;
+    color: #333; /* Черный цвет заголовка */
+}
+
+.income{
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    color: #333; /* Черный цвет текста дохода */
+}
+
+.rewards{
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 20px;
+}
+
+.reward{
+    text-align: center;
+}
+
+.reward-title{
+    font-size: 0.7em;
+    color: #777;
+}
+
+.reward-timer{
+    font-size: 1em;
+    font-weight: bold;
+    color: #333; /* Черный цвет таймера */
+}
+
+.game-area{
+    text-align: center;
+    padding: 15px;
+}
+
+.score-board{
+    display: inline-block;
+    align-items: center;
+    background-color: #f0f0f0; /* Светло-серый фон score-board */
+    padding: 8px 15px;
+    border-radius: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.coin-icon{
+    width: 18px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+#score{
+    font-size: 1.3em;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #333; /* Черный цвет счетчика */
+}
+
+.hamster-img{
+    width: 120px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: transform 0.1s ease;
+}
+.hamster-img:active{
+    transform: scale(0.95);
+}
+
+.energy-boost{
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#energy{
+    font-size: 1.1em;
+    color: #333; /* Черный цвет энергии */
+}
+
+.boost-button{
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+#share-button{
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+}
+#share-button:hover {
+    background-color: #2980b9;
+}
+/* Стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    color: #333; /* Черный цвет текста в модалке */
+    border-radius: 10px;
+}
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#level-display {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #333; /* Черный цвет уровня */
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    text-align: left;
+}
+
+.level {
+    font-size: 12px;
+    color: #888;
+}
+
+.income {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.rewards {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.reward {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.reward-title {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.reward-timer {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.game-area {
+    position: relative;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+#hamster {
+    width: 120px; /* уменьшение размера хомяка */
+    cursor: pointer;
+}
+
+.score-board {
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: -40px; /* перемещение между хомяком и верхней панелью */
+}
+
+.coin-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.energy-boost {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.energy {
+    font-size: 14px;
+    color: #555;
+    margin-right: 10px;
+}
+
+.boost-button {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.boost-button:hover {
+    background-color: #e64a19;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-button:hover {
+    color: #ff5722;
+}
+
+#floating-score {
+    position: absolute;
+    pointer-events: none;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+    #hamster {
+      transition: transform 0.3s ease; /* Применяем transition только к transform */
+    }
+
+    #hamster:active {
+      transform: scale(0.7); /* Уменьшаем размер при нажатии */
+    }
+  </style>
+</head>
+<body>
+
+  <img id="hamster" src="your_hamster_image.jpg" alt="Hamster">
+
+.characters {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
+    margin-top: 20px;
+}
